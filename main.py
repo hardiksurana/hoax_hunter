@@ -6,11 +6,14 @@ from newspaper import Article
 def url_check(trusted, hoax):
     for i in range (0,len(trusted)):
         if trusted[i] in url:
+            print("authentic")
             authenticity_flag = 1
     for i in range(0,len(hoax)):
+        hoax[i]=hoax[i].lower()
         if hoax[i] in url:
+            print("unauthentic")
             authenticity_flag = 0
-        if(".com.co/" or ".lo/" in url):
+        if(".com.co" or ".lo" in url):
             authenticity_flag = 0
     return authenticity_flag
 
@@ -28,10 +31,11 @@ def sentiment_check(url, sid):
             no_quotes.append(text[i])
     no_quotes = " ".join(no_quotes)
     ss = sid.polarity_scores(no_quotes)
-    if kk in sorted(ss) is 'neu':
-        return 1
-    else:
+    print("negative score is",ss['neg'])
+    if ss['neg']>0.5:
         return 0
+    else:
+        return 1
     # for k in sorted(ss):
     #     print('{0}: {1} \n'.format(k, ss[k]), end='')
 
@@ -66,3 +70,5 @@ for url in search(x, stop=1):
     stop_count += 1
     score += url_check(trusted, hoax)
     score += sentiment_check(url, sid)
+    print("Score is ",score)
+    score=0
