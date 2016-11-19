@@ -9,3 +9,11 @@ def get_links():
         x = x.get('href')
         trusted.append(x[2])
     return trusted
+
+def get_hoax_links():
+    soup = BeautifulSoup(open('list_hoax.html'),'lxml')
+    y=soup.find_all('li')
+    hoax=[]
+    for x in y:
+        hoax.append(x.text)
+    return hoax
