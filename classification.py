@@ -87,7 +87,8 @@ from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn import metrics
 
 bunch = load_files('Topics')
-X_train, X_test, y_train, y_test = train_test_split(bunch.data, bunch.target, test_size=0.05)
+X_train, X_test, y_train, y_test = train_test_split(bunch.data, bunch.target, test_size=0.8)
+print(y_test)
 count_vect = CountVectorizer()
 
 X_train_counts = count_vect.fit_transform(X_train)
@@ -101,6 +102,6 @@ l = clf.predict(X_new_counts)
 print(accuracy_score(y_test, l))
 
 # use custom input
-custom = vectorizer.transform("narendra modi is PM of india")
-l = clf.predict(custom)
-print(l)
+# custom = vectorizer.transform("narendra modi is PM of india")
+# l = clf.predict(custom)
+# print(l)
