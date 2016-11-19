@@ -48,10 +48,34 @@ if not os.path.exists(hoax_folder):
 os.chdir(hoax_folder)
 # create_files(d)
 
+os.chdir('../..')
+
 # does the classifications
 from sklearn.datasets import load_files
 from sklearn.cross_validation import train_test_split
-bunch = load_files('/Topics')
-X_train, X_test, y_train, y_test = train_test_split(bunch.data, bunch.target, test_size=.4)
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.feature_extraction.text import TfidfTransformer
+from sklearn import metrics
 
-print(X_test[:-2])
+bunch = load_files('Topics')
+X_train, X_test, y_train, y_test = train_test_split(bunch.data, bunch.target, test_size=0.05)
+
+count_vect = CountVectorizer()
+
+X_train_counts = count_vect.transform(X_train)
+tfidf_transformer = TfidfTransformer()
+X_train_tfidf = tfidf_transformer.fit_transform(X_train_counts)
+print(X_train_tfidf.shape)
+clf = MultinomialNB().fit(X_train_tfidf, bunch.target)
+
+docs_new = ['God is love', 'OpenGL on the GPU is fast', 'Donald trump died']
+X_new_counts = count_vect.transform(X_test)
+X_new_tfidf = tfidf_transformer.transform(X_new_counts)
+
+predicted = clf.predict(X_new_tfidf)
+
+# for doc, category in zip(X_test, predicted):
+#     print('%r => %s' % (doc, bunch.target_names[category]))
+
+print(metrics.classification_report(bunch.target, predicted,target_names=bunch.target_names))
