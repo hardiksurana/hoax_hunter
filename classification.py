@@ -11,6 +11,7 @@ import feedparser
 from newspaper import Article
 import csv
 import os
+from getTrusted import *
 
 def create_files(d):
     count = 1
@@ -32,12 +33,15 @@ if not os.path.exists('Topics'):
 os.chdir('Topics')
 
 authentic_folder = r'Authentic'
-rss_url = 'http://www.business-standard.com/rss/beyond-business-104.rss'
-d = feedparser.parse(rss_url)
 if not os.path.exists(authentic_folder):
     os.makedirs(authentic_folder)
 os.chdir(authentic_folder)
-# create_files(d)
+
+# rss_url = 'http://www.business-standard.com/rss/beyond-business-104.rss'
+urls = getTrusted.get_links()
+for url in urls:
+    d = feedparser.parse(url)
+    create_files(d)
 
 os.chdir('..')
 rss_url = 'http://www.theonion.com/feeds/rss'
@@ -50,6 +54,7 @@ os.chdir(hoax_folder)
 
 os.chdir('../..')
 
+'''
 # does the classifications
 from sklearn.datasets import load_files
 from sklearn.cross_validation import train_test_split
@@ -79,3 +84,4 @@ predicted = clf.predict(X_new_tfidf)
 #     print('%r => %s' % (doc, bunch.target_names[category]))
 
 print(metrics.classification_report(bunch.target, predicted,target_names=bunch.target_names))
+'''
