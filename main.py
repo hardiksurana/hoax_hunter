@@ -65,10 +65,11 @@ score = 0
 
 # generated a score based on 2 tests
 for url in search(x, stop=1):
+    print(url)
     if(stop_count > 10):
         break
     stop_count += 1
     score += url_check(trusted, hoax)
     score += sentiment_check(url, sid)
     print("Score is ",score)
-    score=0
+    score = 0
