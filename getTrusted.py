@@ -12,9 +12,10 @@ def get_links():
     return trusted
 
 def get_hoax_links():
-    soup = BeautifulSoup(open('list_hoax.html'),'lxml')
-    y=soup.find_all('li')
-    hoax=[]
-    for x in y:
-        hoax.append(x.text)
+    # soup = BeautifulSoup(open('list_hoax.html'),'lxml')
+    # y=soup.find_all('li')
+    # hoax=[]
+    # for x in y:
+    #     hoax.append(x.text)
+    hoax = ['http://www.thespoof.com/rss/feeds/frontpage/rss.xml', 'http://www.thespoof.com/rss/feeds/us/rss.xml', 'http://www.thespoof.com/rss/feeds/uk/rss.xml', 'http://www.thespoof.com/rss/feeds/world/rss.xml', 'http://www.thespoof.com/rss/feeds/entertainment/rss.xml', 'http://www.thespoof.com/rss/feeds/science/rss.xml', 'http://www.thespoof.com/rss/feeds/sport/rss.xml', 'http://www.thespoof.com/rss/feeds/business/rss.xml']
     return hoax
