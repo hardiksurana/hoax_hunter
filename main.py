@@ -28,10 +28,11 @@ def sentiment_check(url, sid):
             no_quotes.append(text[i])
     no_quotes = " ".join(no_quotes)
     ss = sid.polarity_scores(no_quotes)
-    if kk in sorted(ss) is 'neu':
-        return 1
-    else:
-        return 0
+    for k in sorted(ss):
+        if k is 'neu':
+            return 1
+        else:
+            return 0
     # for k in sorted(ss):
     #     print('{0}: {1} \n'.format(k, ss[k]), end='')
 
@@ -54,15 +55,19 @@ hoax = list()
 for x in hoax_sites:
     hoax.append(x.text)
 
+# accepts input for the query
 x = input("\nPlease enter the text query: ")
 authenticity_flag = 2
 stop_count = 0
 score = 0
 
-# generated a score based on 2 tests
+# generated a score based on 2 tests - sentiment and url
 for url in search(x, stop=1):
+    print(url)
     if(stop_count > 10):
         break
     stop_count += 1
     score += url_check(trusted, hoax)
     score += sentiment_check(url, sid)
+    print("score = {0}".format(score))
+    print("*"*20)
