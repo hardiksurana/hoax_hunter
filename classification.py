@@ -1,87 +1,27 @@
-# working on classification using naive bayes classifier
-
-# Steps:
-#     get news dataset-authentic and hoax using RSS feeds
-#     create csv file with the data
-#     train the model
-#     test the model
-
-# get RSS feeds
-import feedparser
-from newspaper import Article
-import csv
-import os
-from flask import Flask, render_template
-
-
-titleList = []
-# imgList = []
-
-def create_files(d):
-    count = 1
-    for news in d['entries']:
-        filename = open(str(count) + '.txt', 'w')
-        count += 1
-        title = news['title']
-        paper = Article(link, language='en')
-        paper.download()
-        paper.parse()
-        filename.write(' '.join(paper.text[:].split('\n')))
-        filename.write('\n')
-        filename.write('\n')
-        filename.close()
-
-
-# creates the dataset from the RSS feeds
-if not os.path.exists('Topics'):
-    os.makedirs('Topics')
-os.chdir('Topics')
-
-authentic_folder = r'Authentic'
-rss_url = 'http://www.business-standard.com/rss/beyond-business-104.rss'
-d = feedparser.parse(rss_url)
-if not os.path.exists(authentic_folder):
-    os.makedirs(authentic_folder)
-os.chdir(authentic_folder)
-#create_files(d)
-
-os.chdir('..')
-rss_url = 'http://www.theonion.com/feeds/rss'
-d = feedparser.parse(rss_url)
-hoax_folder = r'Hoax'
-if not os.path.exists(hoax_folder):
-    os.makedirs(hoax_folder)
-os.chdir(hoax_folder)
-#create_files(d)
-
-# does the classifications
 from sklearn.datasets import load_files
 from sklearn.cross_validation import train_test_split
-bunch = load_files('../../Topics')
-X_train, X_test, y_train, y_test = train_test_split(bunch.data, bunch.target, test_size=.4)
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.metrics import accuracy_score
+from sklearn.feature_extraction.text import TfidfTransformer
+from sklearn import metrics
 
-print(y_test)
+bunch = load_files('Topics')
+X_train, X_test, y_train, y_test = train_test_split(bunch.data, bunch.target, test_size=0.05)
 count_vect = CountVectorizer()
 
-for i in range(len(os.listdir('./'))):
-  	firIndex = []
-  	firIndex.append(d['entries'][i]['title'])
-  	firIndex.append(d['entries'][i]['summary_detail']['value'][10:60])
-  	firIndex.append(1)
-  	titleList.append(firIndex)
+X_train_counts = count_vect.fit_transform(X_train)
+vectorizer = TfidfVectorizer(sublinear_tf=True,max_df=0.5, stop_words='english')
+X_train_counts = vectorizer.fit_transform(X_train)
+clf = MultinomialNB(alpha=0.01).fit(X_train_counts, y_train)
 
-print(titleList)
-# def templateRender():
-# 	headline = d['entries']
-# 	return render_template('flaskHTML2.html',headline=name)
+X_new_counts = vectorizer.transform(X_test)
+l = clf.predict(X_new_counts)
 
-
-app = Flask(__name__)
-@app.route('/')
+print(accuracy_score(y_test, l))
 
 # use custom input
-# custom = vectorizer.transform("narendra modi is PM of india")
-# l = clf.predict(custom)
-# print(l)
-def templateRender():
-	return render_template('flaskHTML2.html',headline=titleList)
+custom = vectorizer.transform("narendra modi is PM of india")
+l = clf.predict(custom)
+print(l)
