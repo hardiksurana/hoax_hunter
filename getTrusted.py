@@ -10,3 +10,11 @@ def get_links():
         if(x not in trusted):
             trusted.append(x)
     return trusted
+
+def get_hoax_links():
+    soup = BeautifulSoup(open('list_hoax.html'),'lxml')
+    y=soup.find_all('li')
+    hoax=[]
+    for x in y:
+        hoax.append(x.text)
+    return hoax
