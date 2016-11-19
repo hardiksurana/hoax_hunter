@@ -11,13 +11,11 @@ import feedparser
 from newspaper import Article
 import csv
 import os
-from getTrusted import *
+import getTrusted
 
 def create_files(d):
-    count = 1
     for news in d['entries']:
         filename = open(str(count) + '.txt', 'w')
-        count += 1
         link = news['link']
         paper = Article(link, language='en')
         paper.download()
@@ -25,11 +23,16 @@ def create_files(d):
         filename.write(' '.join(paper.text[:].split('\n')))
         filename.write('\n')
         filename.write('\n')
+        print("File created for file {0}".format(count))
+        count += 1
         filename.close()
 
 # creates the dataset from the RSS feeds
 if not os.path.exists('Topics'):
     os.makedirs('Topics')
+
+urls = getTrusted.get_links()
+print("Number of links = {0}".format(len(urls)))
 os.chdir('Topics')
 
 authentic_folder = r'Authentic'
@@ -37,8 +40,8 @@ if not os.path.exists(authentic_folder):
     os.makedirs(authentic_folder)
 os.chdir(authentic_folder)
 
-# rss_url = 'http://www.business-standard.com/rss/beyond-business-104.rss'
-urls = getTrusted.get_links()
+count = 1
+
 for url in urls:
     d = feedparser.parse(url)
     create_files(d)
