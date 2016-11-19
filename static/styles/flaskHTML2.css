@@ -1,0 +1,34 @@
+*
+{
+	outline: none;
+}
+
+.dataInput
+{
+	height: 30vh;
+	width: 50vw;
+	background: linear-gradient(transparent,gray);
+	border-top: 1.5px solid gray;
+	margin-left: 40vw;
+	padding-top: 5vh;
+	margin-bottom: 7vh;
+}
+
+.dataInput:hover
+{
+	background-color: black;
+	color: white;
+	transition-duration: 0.5s; 
+}
+
+.imgInput
+{
+	position: absolute;
+	margin-top: -2.4vh;
+	margin-bottom: 1px;
+	margin-left: 1vw;
+	height: 25vh; 
+	width: 15vw;
+	opacity: 1.0;
+	border: 4px white solid;
+}
