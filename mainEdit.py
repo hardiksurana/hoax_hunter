@@ -23,17 +23,6 @@ app = Flask(__name__)
 def templateRender():
   return render_template('flaskHTML2.html')
 
-@app.route('/',methods=['GET', 'POST'])
-
-def formPost():
-    user = flask.request.args.get('userInput')
-    print(user)
-    return (1)
-
-url = ('127.0.0.1:5000')
-data = url
-soup = BeautifulSoup(data,'lxml')
-query = (soup.body.text)
 
 def url_check(trusted, hoax, url):
     for i in range (0,len(trusted)):
