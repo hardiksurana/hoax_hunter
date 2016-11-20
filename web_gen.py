@@ -1,13 +1,11 @@
 # web interface
-# import feedparser
-# from newspaper import Article
-# import csv
+import feedparser
+from newspaper import Article
+import csv
 import os
 from flask import Flask, render_template
 import dataset_gen
-# import getTrusted
 
-'''
 def create_files(d):
     count = 1
     for news in d['entries']:
@@ -40,8 +38,6 @@ d = feedparser.parse(rss_url)
 hoax_folder = r'Hoax'
 if not os.path.exists(hoax_folder):
     os.makedirs(hoax_folder)
-'''
-
 
 def get_news_data(d, flag):
     titleList = []

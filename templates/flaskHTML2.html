@@ -32,7 +32,7 @@
 	</nav>
 
 	<div id="home">
-		<form action="{{ url_for('userPage') }}" method="GET" style="position: absolute; margin-left: 9vw; margin-top: 40vh; font-family: 'Slabo 27px', serif;">
+		<form action="login" method="GET" style="position: absolute; margin-left: 9vw; margin-top: 40vh; font-family: 'Slabo 27px', serif;">
 			<span style="color: white; font-size: 40px; margin-left: 24vw;">Truth is just a click away</span>
 			<br>
 			<br>
@@ -45,12 +45,12 @@
 	{% for text in headline %}
 	<div class="dataInput">
 
-		<img src = {{ text[1] }} alt="image comes here" class="imgInput">
+		<a  href= {{ text[0] }}>URL</a>
 
-		<h4 style="margin-left: 18vw;"> {{  text[0]  }} </h4>
-		{% if text[2] == 0 %}
+		<!-- <h4 style="margin-left: 18vw;"> {{  text[0]  }} </h4>
+		{% if text[2] != 3 %}
 		<h3 style="margin-left: 32vw;background-color: green; color:white; margin-top:8vh; text-align: center;">&nbsp;&nbsp;&#x2713;Authentic&nbsp;&nbsp;</h3>
-		{% elif text[2] == 1 %}
+		{% elif text[2] == 3 %} -->
 		<h3 style="margin-left: 32vw; background-color: red;color:white; margin-top:10vh; text-align: center;">&nbsp;&nbsp;&#10006;Fake&nbsp;&nbsp;</h3>
 		{% endif %}
 

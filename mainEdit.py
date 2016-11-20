@@ -116,7 +116,7 @@ def calculate_hoax_score(url, query, searched_content):
 
 # query = formPost()
 bigList=[]
-query = "Donald Trump is the new president elect"
+query = "Hillary Clinton is the new president elect"
 for url in search(query, stop=1):
     # TODO: render template with other article content and set the flag appropriately
     content = Article(url, language='en')
@@ -125,9 +125,11 @@ for url in search(query, stop=1):
     text_content = ' '.join(content.text[0:70].split('\n'))
     hoax_score = calculate_hoax_score(url, query, text_content)
     # print(text_content)
-    # print(hoax_score)
-    # print(url)
+    print(hoax_score)
+    print(url)
     bigList.append([text_content, url, hoax_score])
     print("*"*100)
 
-print(bigList)
+# print(bigList)
+def printTemplate():
+    return render_template('flaskHTML2.html',headline=bigList)
