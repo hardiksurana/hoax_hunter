@@ -6,13 +6,16 @@
 
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
 
+<link href="https://fonts.googleapis.com/css?family=Slabo+27px|Yanone+Kaffeesatz" rel="stylesheet">
+
+
 <head>
 	<title>Hoax Hunter</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
-<body>
+<body style="font-family: 'Slabo 27px', serif;">
 
 	<nav class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container-fluid">
@@ -28,13 +31,16 @@
 		</div>
 	</nav>
 
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
+	<div id="home">
+		<form action="{{ url_for('userPage') }}" method="GET" style="position: absolute; margin-left: 9vw; margin-top: 40vh; font-family: 'Slabo 27px', serif;">
+			<span style="color: white; font-size: 40px; margin-left: 24vw;">Truth is just a click away</span>
+			<br>
+			<br>
+			<input type="text" name="userInput" placeholder="Search a News..." style="width: 70vw; height: 10vh; padding: 2px 4px 2px 15px; font-size: 27px; border-radius: 4px; border:none; ">
+			<button class="btn btn-warning" style="height: 10vh; width: 8vw;margin-top: -10px; font-family: 'Slabo 27px', serif; font-size: 20px;">Search</button>
 
+		</form>
+	</div>
 
 	{% for text in headline %}
 	<div class="dataInput">
