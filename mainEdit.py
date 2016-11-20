@@ -6,7 +6,8 @@ import feedparser
 from newspaper import Article
 from fuzzywuzzy import fuzz
 import getTrusted
-from flask import Flask, render_template, request
+from flask import Flask, render_template
+import flask
 
 '''
 app = Flask(__name__)
@@ -22,20 +23,18 @@ app = Flask(__name__)
 def templateRender():
   return render_template('flaskHTML2.html')
 
-@app.route('/',methods=['POST','GET'])
-def formPost():  
-  if request.method=='POST':
-    user = request.form['userInput']
-    return (user)
+@app.route('/',methods=['GET', 'POST'])
+
+def formPost():
+    user = flask.request.args.get('userInput')
+    print(user)
+    return (1)
 
 url = ('127.0.0.1:5000')
 data = url
 soup = BeautifulSoup(data,'lxml')
-query = (soup.body.text) 
+query = (soup.body.text)
 
-#query = formPost()
-#print(query)
-  
 def url_check(trusted, hoax, url):
     for i in range (0,len(trusted)):
         if trusted[i] in url:
@@ -69,8 +68,6 @@ def sentiment_check(url, sid):
         return 1
     else:
         return 0
-    # for k in sorted(ss):
-    #     print('{0}: {1} \n'.format(k, ss[k]), end='')
 
 sid = SentimentIntensityAnalyzer()
 
@@ -96,24 +93,14 @@ authenticity_flag = 2
 # generated a score based on 2 tests
 def calculate_hoax_score(url, query, searched_content):
     stop_count = 0
-    # for url in search(query, stop=1):
     hoax_score = 0
 
     if(stop_count > 10):
-        hoax_score+=0
-        #break
+        hoax_score += 0
     stop_count += 1
-
-    # print("Searched query: "+url)
-    # gets searched query's article's content
-#    searched_url_content = Article(url, language='en')
-#    searched_url_content.download()
-#    searched_url_content.parse()
-#    searched_content = ' '.join(searched_url_content.text[:].split('\n'))
 
     # search for similar content from RSS feed sites
     for url_rss in getTrusted.get_hoax_links():
-        # print("RSS url: "+url_rss)
         rss_limit = 0
         d = feedparser.parse(url_rss)
         for news in d['entries']:
@@ -122,7 +109,6 @@ def calculate_hoax_score(url, query, searched_content):
             if(rss_limit > 10):
                 break
             if(fuzz.token_set_ratio(query, news['title_detail']['value']) >80):
-                # print("title matches")
                 link = news['link']
                 paper = Article(link, language='en')
                 paper.download()
@@ -130,30 +116,29 @@ def calculate_hoax_score(url, query, searched_content):
                 text = ' '.join(paper.text[:].split('\n'))
                 # TODO: replace with gensim or other method for efficient comparison
                 if(fuzz.token_set_ratio(text, searched_content) > 80):
-                    # print(x," and the news is        ",news['title_detail']['value'])
-                    # print("this news is authentic")
                     hoax_score += 0
                 else:
-                    # print(x," and the news is        ",news['title_detail']['value'])
-                    # print("this news is hoax")
                     hoax_score += 1
             else:
                 pass
     hoax_score += url_check(trusted, hoax, url)
     hoax_score += sentiment_check(url, sid)
-    # print("Score is ",hoax_score)
     return hoax_score
 
 # query = formPost()
-query = "narendra modi is the prime minister of india"
+bigList=[]
+query = "Donald Trump is the new president elect"
 for url in search(query, stop=1):
     # TODO: render template with other article content and set the flag appropriately
     content = Article(url, language='en')
     content.download()
     content.parse()
-    text_content = ' '.join(content.text[:].split('\n'))
+    text_content = ' '.join(content.text[0:70].split('\n'))
     hoax_score = calculate_hoax_score(url, query, text_content)
-    print(hoax_score)
-    print(url)
+    # print(text_content)
+    # print(hoax_score)
+    # print(url)
+    bigList.append([text_content, url, hoax_score])
     print("*"*100)
-# print(calculate_hoax_score("Trump and British Families"))
+
+print(bigList)
